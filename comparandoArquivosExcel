@@ -1,0 +1,32 @@
+##### Comparando arquivos xlsx
+
+import pandas as pd
+
+def compare_excel_structure(modelo_file, novodado_file):
+    df_modelo = pd.read_excel(modelo_file)
+    df_novodado = pd.read_excel(novodado_file)
+
+    # Comparando as colunas
+    if set(df_modelo.columns) == set(df_novodado.columns):
+        print("As colunas nos dois arquivos são as mesmas.")
+    else:
+        missing_columns = set(df_modelo.columns) - set(df_novodado.columns)
+        additional_columns = set(df_novodado.columns) - set(df_modelo.columns)
+        if missing_columns:
+            print(f"As colunas {missing_columns} estão faltando no novo arquivo.")
+        if additional_columns:
+            print(f"As colunas {additional_columns} foram adicionadas no novo arquivo.")
+
+    # Comparando a quantidade de linhas
+    if len(df_modelo) == len(df_novodado):
+        print("Os dois arquivos têm a mesma quantidade de linhas.")
+    else:
+        print(f"O arquivo modelo tem {len(df_modelo)} linhas e o novo arquivo tem {len(df_novodado)} linhas.")
+
+    # Comparando os tipos de dados
+    for column in df_modelo.columns:
+        if df_modelo[column].dtype != df_novodado[column].dtype:
+            print(f"Os tipos de dados na coluna {column} são diferentes nos dois arquivos. No arquivo modelo é {df_modelo[column].dtype} e no novo arquivo é {df_novodado[column].dtype}.")
+
+# Usando a função
+compare_excel_structure('modelo.xlsx', 'novodado.xlsx')
